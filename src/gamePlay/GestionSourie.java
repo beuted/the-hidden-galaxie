@@ -71,6 +71,11 @@ public class GestionSourie {
 	 * @return 
 	 */
 	public ETAT_JEU gererClick(GestionEvenements gestEvenements, Input input, ETAT_JEU etatJeu) {
+		// On créé dest qu'on utilise bcp par la suite
+		// TODO forcement un truc mieux a faire ici
+		Tuple coordMap = new Tuple(hero.getCoord().x - tailleEcran.x/2, hero.getCoord().y - tailleEcran.y/2);
+		Tuple dest = new Tuple(dessus.x + coordMap.x, dessus.y + coordMap.y);
+		
 		//On actualise le Tuple "dessus"
 		Tuple mouse = new Tuple(input.getMouseX(),input.getMouseY());
 		this.selection(mouse);   
@@ -81,18 +86,15 @@ public class GestionSourie {
 		switch (etatJeu) {
 		case JEU :
 			if (clickG && gestEvenements.isEmpty()) {
-				Tuple coordMap = new Tuple(hero.getCoord().x - tailleEcran.x/2, hero.getCoord().y - tailleEcran.y/2);
-				Tuple dest = new Tuple(dessus.x + coordMap.x, dessus.y + coordMap.y);
 				if (InfoCase.isPassable(map.getCase(dest.y, dest.x).numTile))
 					PlusCourtChemin.allerA(hero.getCoord(), dest, tailleEcran, gestEvenements, map);
 			}
 		
 			if( clickD && gestEvenements.isEmpty()) {
-				Tuple coordMap = new Tuple(hero.getCoord().x - tailleEcran.x/2, hero.getCoord().y - tailleEcran.y/2);
-				Tuple dest = new Tuple(dessus.x + coordMap.x, dessus.y + coordMap.y);
 				boolean ramasser = (map.getCase(dest.y, dest.x).objet != null);
+				/* Si il y a au moins un bouton a true */
 				if (ramasser) {
-					boiteAction.setCaseCible(dessus, ramasser);
+					boiteAction.setCaseCible(mouse, ramasser, dest);
 					return ETAT_JEU.BOITE_ACTION;
 				}
 			}
@@ -101,8 +103,6 @@ public class GestionSourie {
 		case BOITE_ACTION :		
 			boiteAction.checkBoutonSelec(mouse);
 			if ((clickD || clickG) && gestEvenements.isEmpty()) {
-				Tuple coordMap = new Tuple(hero.getCoord().x - tailleEcran.x/2, hero.getCoord().y - tailleEcran.y/2);
-				Tuple dest = new Tuple(dessus.x + coordMap.x, dessus.y + coordMap.y);
 				boiteAction.click();
 				return ETAT_JEU.JEU;
 			}
@@ -110,6 +110,15 @@ public class GestionSourie {
 			
 		case INVENTAIRE :
 			inventaire.majNumObjetSelec(mouse);
+			if (clickD && gestEvenements.isEmpty()) {
+				int objetInvCible = inventaire.getNumObjetSelec();
+				boolean poser = (map.getCase(hero.getCoord().y, hero.getCoord().x).objet == null);
+				/* Si il y a au moins un bouton a true */
+				if (objetInvCible != -1 && poser == true) {
+					boiteAction.setObjetInvCible(mouse, poser, objetInvCible);
+					return ETAT_JEU.BOITE_ACTION;
+				}
+			}
 			break;
 		}
 		return etatJeu;

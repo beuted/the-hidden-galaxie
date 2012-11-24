@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 
 import gamePlay.DIRECTION;
 import gamePlay.GestionEvenements;
-import gamePlay.Deplacement;
+import gamePlay.EvtDeplacement;
 
 public class PlusCourtChemin {
 	
@@ -87,13 +87,13 @@ public class PlusCourtChemin {
 	    // tant qu'on arrive pas au premier
 	    while (!prec.equals(coordDepart)){
 	    	if (n.x-prec.x > 0) {
-	    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.DROITE));
+	    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.DROITE));
 	    	} else if (n.x-prec.x < 0) {
-	    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.GAUCHE));
+	    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.GAUCHE));
 	    	} else if (n.y-prec.y > 0) {
-	    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.BAS));
+	    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.BAS));
 	    	} else if (n.y-prec.y < 0) {
-	    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.HAUT));
+	    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.HAUT));
 	    	} else if (!(n.y == prec.y && n.x == prec.x)){
 	    		System.out.println("ERREUR : PlusCourtChemin est faux. on va de " + prec.x + ", " + prec.y + " a "+ n.x + ", " + n.y);
 	    	}
@@ -106,13 +106,13 @@ public class PlusCourtChemin {
 	        prec.y = tmp.parent.y;
 	    }
 	    if (n.x-prec.x > 0) {
-    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.DROITE));
+    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.DROITE));
     	} else if (n.x-prec.x < 0) {
-    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.GAUCHE));
+    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.GAUCHE));
     	} else if (n.y-prec.y > 0) {
-    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.BAS));
+    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.BAS));
     	} else if (n.y-prec.y < 0) {
-    		gestEvenement.addFirstEvenement(new Deplacement(DIRECTION.HAUT));
+    		gestEvenement.addFirstEvenement(new EvtDeplacement(DIRECTION.HAUT));
     	} else if (!(n.y == prec.y && n.x == prec.x)){
     		System.out.println("ERREUR : PlusCourtChemin est faux. on va de " + prec.x + ", " + prec.y + " a "+ n.x + ", " + n.y);
     	}

@@ -37,5 +37,5 @@ public abstract class Bouton {
 		return dessus;
 	}
 	
-	public abstract void action(Tuple coordDepart, Tuple coordArrivee, Tuple tailleBoiteTravail, GestionEvenements gestEvenements, Map map, Inventaire inv);
+	public abstract void action(Tuple coordDepart, Tuple tailleBoiteTravail, GestionEvenements gestEvenements, Map map, Inventaire inv);
 }

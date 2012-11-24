@@ -9,9 +9,12 @@ import org.newdawn.slick.Image;
 
 
 public class BoutonRamasser extends Bouton {
-    
-	public BoutonRamasser(Image imageUp, Image imageDown, Tuple coord) {
+	
+	private Tuple caseCible;
+	
+	public BoutonRamasser(Image imageUp, Image imageDown, Tuple coord, Tuple caseCible) {
 		super(imageUp, imageDown, coord);
+		this.caseCible = caseCible;
 	}
 	
 	public void afficher() {
@@ -22,8 +25,8 @@ public class BoutonRamasser extends Bouton {
 			Polices.Verdana.drawString(coord.x, coord.y, "ramasser");
 	}
 
-	public void action(Tuple coordDepart, Tuple coordArrivee, Tuple tailleBoiteTravail, GestionEvenements gestEvenements, Map map, Inventaire inv) {
-		if (PlusCourtChemin.allerA(coordDepart, coordArrivee, tailleBoiteTravail, gestEvenements, map))
-			gestEvenements.addLastEvenement(new Ramassage(null));
+	public void action(Tuple coordDepart, Tuple tailleBoiteTravail, GestionEvenements gestEvenements, Map map, Inventaire inv) {
+		if (PlusCourtChemin.allerA(coordDepart, caseCible, tailleBoiteTravail, gestEvenements, map))
+			gestEvenements.addLastEvenement(new EvtRamasser(null));
 	}
 }

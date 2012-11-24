@@ -24,8 +24,8 @@ public class BoiteAction {
 	private Map map;
 	private Inventaire inventaire;
 	
-	private int ObjetInvCible = 0;
-	private Tuple caseCible = new Tuple(0,0); //Case au sens de ce qui s'affiche a l'ecran
+	//private Tuple caseCible = new Tuple(0,0);  //Case au sens de ce qui s'affiche a l'ecran
+	private Tuple coordBoite = new Tuple(0,0); // coord en pixel de la boite sur l'ecran
 	private ArrayList<Bouton> listeBoutons = new ArrayList<Bouton>(nbMaxAction);
 	
 	//Constantes
@@ -60,12 +60,12 @@ public class BoiteAction {
 	public void afficher() {
 		int i;
 		
-		bordHaut.draw((caseCible.x+1)*32, (caseCible.y+1)*32);
+		bordHaut.draw(coordBoite.x, coordBoite.y);
 		for (i = 0; i < listeBoutons.size(); i++) {
-			boite.draw((caseCible.x+1)*32, (caseCible.y+1+i)*32+6);
+			boite.draw(coordBoite.x, coordBoite.y + i*32+6);
 			listeBoutons.get(i).afficher();
 		}
-		bordBas.draw((caseCible.x+1)*32, (caseCible.y+1+i)*32+6);
+		bordBas.draw(coordBoite.x, coordBoite.y+i*32+6);
 	}
 	
 	/**
@@ -74,13 +74,13 @@ public class BoiteAction {
 	 * @param caseCible -
 	 * @param ramasser - 
 	 */
-	public void setCaseCible(Tuple caseCible, boolean ramasser) {
+	public void setCaseCible(Tuple mouse, boolean ramasser, Tuple caseCible) {
 		listeBoutons.clear();
-		this.caseCible.x = caseCible.x;
-		this.caseCible.y = caseCible.y;
+		this.coordBoite.x = mouse.x;
+		this.coordBoite.y = mouse.y;
 		if (ramasser) {
-			Tuple coordBouton = new Tuple((caseCible.x+1)*32+16 ,(caseCible.y+1)*32+6+7);
-			listeBoutons.add(new BoutonRamasser(boutonUp, boutonDown, coordBouton));
+			Tuple coordBouton = new Tuple(coordBoite.x+16 ,coordBoite.y+6+7);
+			listeBoutons.add(new BoutonRamasser(boutonUp, boutonDown, coordBouton, caseCible));
 		}
 		//int nbBoutons = listeBoutons.size();
 	}
@@ -88,15 +88,18 @@ public class BoiteAction {
 	/**
 	 * Dans le cas d'un click sur l'inventaire on retient l'objet cible
 	 * On ajoute aussi les boutons possibles.
+	 * @param objetInvCible 
 	 * @param caseCible -
 	 * @param ramasser - 
 	 */
-	public void setObjetInvCible(Tuple mouse, boolean poser) {
+	public void setObjetInvCible(Tuple mouse, boolean poser, int objetInvCible) {
 		listeBoutons.clear();
 		//inventaire.
 		if (poser) {
-			Tuple coordBouton = new Tuple((caseCible.x+1)*32+16 ,(caseCible.y+1)*32+6+7);
-			listeBoutons.add(new BoutonRamasser(boutonUp, boutonDown, coordBouton));
+			this.coordBoite.x = mouse.x;
+			this.coordBoite.y = mouse.y;
+			Tuple coordBouton = new Tuple(coordBoite.x+16 ,coordBoite.y+6+7);
+			listeBoutons.add(new BoutonPoser(boutonUp, boutonDown, coordBouton, objetInvCible));
 		}
 		//int nbBoutons = listeBoutons.size();
 	}
@@ -104,7 +107,7 @@ public class BoiteAction {
 	
 	/**
 	 * Actualise la variable int boutonSelec qui va permettre d'afficher le bouton comme
-	 * enfoncé ou non
+	 * enfoncé ou non entre autre
 	 * @param mouse - coord de la sourie;
 	 */
 	public void checkBoutonSelec(Tuple mouse) {
@@ -115,15 +118,15 @@ public class BoiteAction {
 		}
 	}
 	
+	/**
+	 * Fonction gérant un click de la sourie dans l'état BOITE_ACTION
+	 */
 	public void click() {
 		Iterator<Bouton> it = listeBoutons.iterator();
 		while (it.hasNext()) {
 			Bouton b = it.next();
 			if(b.getDessus()) {
-				// /!\ Attention on modifie direct caseCible /!\
-				caseCible.x += hero.getCoord().x - tailleEcran.x/2;
-				caseCible.y += hero.getCoord().y - tailleEcran.y/2;
-				b.action(hero.getCoord(), caseCible, tailleEcran, gestEvenements, map, inventaire);
+				b.action(hero.getCoord(), tailleEcran, gestEvenements, map, inventaire);
 			}
 		}
 	}

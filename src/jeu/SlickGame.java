@@ -22,11 +22,11 @@ public class SlickGame extends StateBasedGame {
     }
  
     public static void main(String[] args) throws SlickException
-    {
-         AppGameContainer app = new AppGameContainer(new SlickGame());
-         app.setTargetFrameRate(60);
-         app.setDisplayMode(800, 600, false);	 
-         app.start();
+    {	
+		AppGameContainer app = new AppGameContainer(new SlickGame());
+		app.setTargetFrameRate(60);
+		app.setDisplayMode(800, 600, false);	 
+		app.start();
     }
  
     @Override

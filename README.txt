@@ -2,6 +2,9 @@
               ## The Hidden Galaxie ##
               ########################
 
+RPG developped in Java.
+Interessting points of this project : circular map, A* algorithm, self-developped GUI, map editor
+
 
 # How to play #######################################
                                                     #

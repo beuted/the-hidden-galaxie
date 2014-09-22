@@ -1,6 +1,6 @@
 
-The Hidden Galaxie
-==================
+The Hidden Galaxie : 2012
+=========================
 
 
 RPG developped in Java.
